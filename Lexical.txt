@@ -1,114 +1,48 @@
-{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
-{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;\red28\green0\blue207;\red196\green26\blue22;}
-{\*\expandedcolortbl;;\csgenericrgb\c10980\c0\c81176;\csgenericrgb\c76863\c10196\c8627;}
-\margl1440\margr1440\vieww10800\viewh8400\viewkind0
-\deftab720
-\pard\tx543\pardeftab720\ri0\partightenfactor0
+digits [0-9]
+ltr [a-zA-Z]
+alphanum [a-zA-Z0-9]
 
-\f0\fs22 \cf0 digits [\cf2 0-9\cf0 ]
-\f1\fs24 \
+%%
 
-\f0\fs22 ltr [a-zA-Z]
-\f1\fs24 \
+("abstract"|"assert"|"boolean"|"break"|"byte"|"case"|"case"|"catch"|"char"|"class"|"const"|"default"|"do"|"double"|"else"|"enum"|"extends"|"false"|"final"|"finally"|"float"|"for"|"goto"|"if"|"implements"|"import"|"instanceof"|"int"|"interface"|"long"|"native"|"new"|"null"|"package"|"private"|"protected"|"public"|"return"|"short"|"static"|"strictfp"|"super"|"switch"|"synchronized"|"this"|"throw"|"throws"|"transient"|"true"|"try"|"void"|"volatile"|"while"|"continue") printf("found reserved word: ’%s’\n", yytext);
 
-\f0\fs22 alphanum [a-zA-Z0\cf2 -9\cf0 ]
-\f1\fs24 \
-\
+("//")({alphanum}|" ")*|(("/*")({alphanum}|" ")*("*/")) printf("found Comment : '%s'\n", yytext);
 
-\f0\fs22 %%
-\f1\fs24 \
-\
+{digits}+ printf("found number: ’%s’\n", yytext);
 
-\f0\fs22 (\cf3 "abstract"\cf0 |\cf3 "assert"\cf0 |\cf3 "boolean"\cf0 |\cf3 "break"\cf0 |\cf3 "byte"\cf0 |\cf3 "case"\cf0 |\cf3 "case"\cf0 |\cf3 "catch"\cf0 |\cf3 "char"\cf0 |\cf3 "class"\cf0 |\cf3 "const"\cf0 |\cf3 "default"\cf0 |\cf3 "do"\cf0 |\cf3 "double"\cf0 |\cf3 "else"\cf0 |\cf3 "enum"\cf0 |\cf3 "extends"\cf0 |\cf3 "false"\cf0 |\cf3 "final"\cf0 |\cf3 "finally"\cf0 |\cf3 "float"\cf0 |\cf3 "for"\cf0 |\cf3 "goto"\cf0 |\cf3 "if"\cf0 |\cf3 "implements"\cf0 |\cf3 "import"\cf0 |\cf3 "instanceof"\cf0 |\cf3 "int"\cf0 |\cf3 "interface"\cf0 |\cf3 "long"\cf0 |\cf3 "native"\cf0 |\cf3 "new"\cf0 |\cf3 "null"\cf0 |\cf3 "package"\cf0 |\cf3 "private"\cf0 |\cf3 "protected"\cf0 |\cf3 "public"\cf0 |\cf3 "return"\cf0 |\cf3 "short"\cf0 |\cf3 "static"\cf0 |\cf3 "strictfp"\cf0 |\cf3 "super"\cf0 |\cf3 "switch"\cf0 |\cf3 "synchronized"\cf0 |\cf3 "this"\cf0 |\cf3 "throw"\cf0 |\cf3 "throws"\cf0 |\cf3 "transient"\cf0 |\cf3 "true"\cf0 |\cf3 "try"\cf0 |\cf3 "void"\cf0 |\cf3 "volatile"\cf0 |\cf3 "while"\cf0 |\cf3 "continue"\cf0 ) printf(\cf3 "found reserved word: \'92%s\'92\\n"\cf0 , yytext);
-\f1\fs24 \
-\
+{ltr}(_|{alphanum})* printf("found identifer: ’%s’\n", yytext);
 
-\f0\fs22 (\cf3 "//"\cf0 )(\{alphanum\}|\cf3 " "\cf0 )*|((\cf3 "/*"\cf0 )(\{alphanum\}|\cf3 " "\cf0 )*(\cf3 "*/"\cf0 )) printf(\cf3 "found Comment : '%s'\\n"\cf0 , yytext);
-\f1\fs24 \
-\
-\pard\tx543\pardeftab720\ri0\partightenfactor0
+("{"|"}"|"("|")"|";"|",") printf("found Separator : '%s'\n", yytext);
 
-\fs22 \cf0 \{
-\f0 digits\}+ printf(\cf3 "found number: \'92%s\'92\\n"\cf0 , yytext);
-\f1\fs24 \
-\
+("++"|"--")({ltr}+)|({ltr}+)("++"|"--") printf("found Unary Operator : '%s'\n", yytext);
 
-\fs22 \{
-\f0 ltr\}(_|\{alphanum\})* printf(\cf3 "found identifer: \'92%s\'92\\n"\cf0 , yytext);
-\f1\fs24 \
-\
-\pard\tx543\pardeftab720\ri0\partightenfactor0
+("*"|"/"|"%"|"+"|"-") printf("found Arithmetic Operator : '%s'\n", yytext);
 
-\f0\fs22 \cf0 (\cf3 "\{"\cf0 |\cf3 "\}"\cf0 |\cf3 "("\cf0 |\cf3 ")"\cf0 |\cf3 ";"\cf0 |\cf3 ","\cf0 ) printf(\cf3 "found Separator : '%s'\\n"\cf0 , yytext);
-\f1\fs24 \
-\
+("<<"|">>"|">>>") printf("found Shift Operator : '%s'\n", yytext);
 
-\f0\fs22 (\cf3 "++"\cf0 |\cf3 "--"\cf0 )(\{ltr\}+)|(\{ltr\}+)(\cf3 "++"\cf0 |\cf3 "--"\cf0 ) printf(\cf3 "found Unary Operator : '%s'\\n"\cf0 , yytext);
-\f1\fs24 \
-\
+("<"|">"|"<="|">=") printf("found Comparison Operator : '%s'\n", yytext);
 
-\f0\fs22 (\cf3 "*"\cf0 |\cf3 "/"\cf0 |\cf3 "%"\cf0 |\cf3 "+"\cf0 |\cf3 "-"\cf0 ) printf(\cf3 "found Arithmetic Operator : '%s'\\n"\cf0 , yytext);
-\f1\fs24 \
-\
+("=="|"!=") printf("found Equality Operator : '%s'\n", yytext);
 
-\f0\fs22 (\cf3 "<<"\cf0 |\cf3 ">>"\cf0 |\cf3 ">>>"\cf0 ) printf(\cf3 "found Shift Operator : '%s'\\n"\cf0 , yytext);
-\f1\fs24 \
-\
+("&"|"|"|"^") printf("found Bitwise Operator : '%s'\n", yytext);
 
-\f0\fs22 (\cf3 "<"\cf0 |\cf3 ">"\cf0 |\cf3 "<="\cf0 |\cf3 ">="\cf0 ) printf(\cf3 "found Comparison Operator : '%s'\\n"\cf0 , yytext);
-\f1\fs24 \
-\
+("&&"|"||") printf("found Logical Operator : '%s'\n", yytext);
 
-\f0\fs22 (\cf3 "=="\cf0 |\cf3 "!="\cf0 ) printf(\cf3 "found Equality Operator : '%s'\\n"\cf0 , yytext);
-\f1\fs24 \
-\
+("? :") printf("found Ternary Operator : '%s'\n", yytext);
 
-\f0\fs22 (\cf3 "&"\cf0 |\cf3 "|"\cf0 |\cf3 "^"\cf0 ) printf(\cf3 "found Bitwise Operator : '%s'\\n"\cf0 , yytext);
-\f1\fs24 \
-\
+("="|"+="|"-="|"/="|"%="|"*="|"&="|"^="|"|="|"<<="|">>="|">>>=") printf("found Assignment Operator : '%s'\n", yytext);
 
-\f0\fs22 (\cf3 "&&"\cf0 |\cf3 "||"\cf0 ) printf(\cf3 "found Logical Operator : '%s'\\n"\cf0 , yytext);
-\f1\fs24 \
-\
+’.’ printf("found character: {%s}\n", yytext);
 
-\f0\fs22 (\cf3 "? :"\cf0 ) printf(\cf3 "found Ternary Operator : '%s'\\n"\cf0 , yytext);
-\f1\fs24 \
-\
+%%
 
-\f0\fs22 (\cf3 "="\cf0 |\cf3 "+="\cf0 |\cf3 "-="\cf0 |\cf3 "/="\cf0 |\cf3 "%="\cf0 |\cf3 "*="\cf0 |\cf3 "&="\cf0 |\cf3 "^="\cf0 |\cf3 "|="\cf0 |\cf3 "<<="\cf0 |\cf3 ">>="\cf0 |\cf3 ">>>="\cf0 ) printf(\cf3 "found Assignment Operator : '%s'\\n"\cf0 , yytext);
-\f1\fs24 \
-\
-
-\f0\fs22 \'92.\'92 printf(\cf3 "found character: \{%s\}\\n"\cf0 , yytext);
-\f1\fs24 \
-\
-
-\f0\fs22 %%
-\f1\fs24 \
-\
-
-\f0\fs22 int main(int argc, char **argv)
-\f1\fs24 \
-\pard\tx543\pardeftab720\ri0\partightenfactor0
-
-\fs22 \cf0 \{
-\fs24 \
-\pard\tx543\pardeftab720\ri0\partightenfactor0
-
-\f0\fs22 \cf0     printf(\cf3 "INPUT : "\cf0 );
-\f1\fs24 \
-
-\f0\fs22     yylex();
-\f1\fs24 \
-\pard\pardeftab720\ri0\partightenfactor0
-
-\fs22 \cf0 \}
-\fs27 \
-\
-OUTPUT :\
-Abhisheks-MacBook-Pro:Desktop abhishekpadalkar$ flex flex.l\
-Abhisheks-MacBook-Pro:Desktop abhishekpadalkar$ gcc lex.yy.c -ll\
-Abhisheks-MacBook-Pro:Desktop abhishekpadalkar$ ./a.out\
-\
+int main(int argc, char **argv)
+{
+    printf("INPUT : ");
+    yylex();
 }
+
+OUTPUT :
+Abhisheks-MacBook-Pro:Desktop abhishekpadalkar$ flex flex.l
+Abhisheks-MacBook-Pro:Desktop abhishekpadalkar$ gcc lex.yy.c -ll
+Abhisheks-MacBook-Pro:Desktop abhishekpadalkar$ ./a.out
